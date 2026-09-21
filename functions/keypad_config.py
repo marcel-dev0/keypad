@@ -80,14 +80,13 @@ def should_fire(key_number):
 
 def get_phrase(name):
     """Text for a ("phrase", name) step. phrases.json is re-read on every
-    call (no module caching) and is kept out of git; phrases.example.json
-    is the committed template. On any error a desktop notification is shown
-    and "DEFAULT" is returned (so that is what ends up being typed)."""
+    call (no module caching) and is kept out of git; its format is described
+    in the README. On any error a desktop notification is shown and
+    "DEFAULT" is returned (so that is what ends up being typed)."""
     try:
         phrases = json.loads(PHRASES_FILE.read_text(encoding="utf-8"))
     except FileNotFoundError:
-        _notify_error(f"{PHRASES_FILE} fehlt - phrases.example.json "
-                      "nach phrases.json kopieren und anpassen")
+        _notify_error(f"{PHRASES_FILE} fehlt - Aufbau siehe README")
         return "DEFAULT"
     except ValueError as e:
         _notify_error(f"{PHRASES_FILE} ist kein gültiges JSON: {e}")

@@ -2,18 +2,17 @@
 
 Each layer has a theme "name" and a "keys" dict (1-9) with a display
 "label" (used by Show Layer.py) and a "value": a list of steps,
-executed in order by Action N.py. Five step kinds:
+executed in order by Action N.py. Four step kinds:
 
 - ("send_keys", "...")  -> keyboard.send_keys(...). Fine for APP-INTERNAL
   shortcuts (the focused app itself reads the key, e.g. Ctrl+C/V/X in
   most programs). Text is parsed: "<ctrl>" etc. are special keys.
 - ("phrase", "name") -> types the text stored under "name" in
-  phrases.json (copy phrases.example.json; the real file is git-ignored)
-  via real XTest events, passed through stdin so secrets never show up in
-  `ps`. Same limits as "type": no newlines/tabs/emoji.
-- ("type", "text") -> types literal text via real XTest events (type_text.py).
-  Use instead of send_keys where the target ignores SendEvent keys, e.g.
-  Cinnamon's modal "Legitimation erforderlich" (polkit) dialog.
+  phrases.json (format: see README; the file is git-ignored)
+  via real XTest events (type_text.py), passed through stdin so secrets
+  never show up in `ps`. Works where send_keys is ignored, e.g. Cinnamon's
+  modal "Legitimation erforderlich" (polkit) dialog. Limits: no
+  newlines/tabs/emoji.
 - ("launch", ["program", "arg", ...]) -> starts a program detached from
   AutoKey (does not wait for it to exit), e.g. ["firefox", "https://..."].
 - ("hotkey", [Keysyms...], {"repeat": 1, "hold_ms": 20}) -> shells out to

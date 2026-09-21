@@ -94,7 +94,7 @@ Ebenen fügst du in `LAYERS` und `LAYER_COLORS` hinzu.
 geht über stdin an `type_text.py`, damit er nicht in der Prozessliste (`ps`)
 auftaucht.
 
-Grenzen von `phrase` und `type`: Zeilenumbrüche, Tabs und Emojis lassen sich
+Grenzen von `phrase`: Zeilenumbrüche, Tabs und Emojis lassen sich
 nicht tippen, weil sie im Tastaturlayout keine eigene Taste haben. Zeichen
 müssen im aktuell eingestellten Layout erreichbar sein (Umlaute und AltGr-Zeichen
 funktionieren).
@@ -104,7 +104,7 @@ funktionieren).
 | Datei | Zweck |
 |-------|-------|
 | `layers.py` | Belegung und Farben, die einzige Datei, die du normalerweise änderst |
-| `phrases.json` / `phrases.example.json` | Texte für `("phrase", …)` |
+| `phrases.json` | Texte für `("phrase", …)`, nicht im Repository (siehe oben) |
 | `Action 1–9.py` | Tasten 1–9, rufen nur `run_key(n, keyboard)` auf |
 | `Layer Up.py`, `Layer Down.py`, `Show Layer.py` | Ebene wechseln bzw. anzeigen |
 | `functions/keypad_config.py` | Ebenenzustand, Entprellung, Schrittausführung |
