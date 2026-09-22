@@ -28,6 +28,11 @@ executed in order by Action N.py. Four step kinds:
   "Alt_L", "Control_L", "Super_L", "F4", "Tab", "Down", "Up", "c".
 """
 
+import os
+
+_FUNCTIONS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "functions")
+_SET_KEYPAD_COLOR = os.path.join(_FUNCTIONS_DIR, "set_keypad_color.py")
+
 TODO_KEY = {"label": "TODO", "value": []}
 
 
@@ -92,17 +97,17 @@ LAYERS = {
             6: dict(TODO_KEY),
             7: dict(TODO_KEY),
             8: dict(TODO_KEY),
-            9: dict(TODO_KEY),
+            9: {"label": "Licht aus", "value": [("launch", [_SET_KEYPAD_COLOR, "effect", "off", "0", "0", "0"])]},
         },
     },
     5: {
         "name": "VS Code",
         "keys": {
             1: {"label": "VSCode", "value": [("launch", ["code", ""])]},
-            2: dict(TODO_KEY),
-            3:dict(TODO_KEY),
-            4: dict(TODO_KEY),
-            5: dict(TODO_KEY),
+            2: {"label": "Checkout dev", "value": [("phrase", "checkout")]},
+            3: {"label": "Pull dev", "value": [("phrase", "pull")]},
+            4: {"label": "Merge", "value": [("phrase", "merge")]},
+            5: {"label": "Main", "value": [("phrase", "main")]},
             6: dict(TODO_KEY),
             7: dict(TODO_KEY),
             8: dict(TODO_KEY),
