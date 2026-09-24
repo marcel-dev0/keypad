@@ -21,6 +21,8 @@ from Xlib import X, XK
 from Xlib.display import Display
 from Xlib.ext import xtest
 
+from wait_for_release import wait_for_release
+
 
 def main():
     args = sys.argv[1:]
@@ -56,7 +58,10 @@ def main():
     # the button yet), so those real modifiers can still be part of the
     # event state when we inject our own combo below - which makes a WM
     # grab expecting an EXACT mask (e.g. just Alt+F4) not match. Force a
-    # clean slate first; releasing an already-up key is a harmless no-op.
+    # clean slate first: wait for the button to be let go (see
+    # wait_for_release.py), then release them once more in case the wait
+    # timed out; releasing an already-up key is a harmless no-op.
+    wait_for_release(d)
     common_modifiers = ["Control_L", "Control_R", "Shift_L", "Shift_R",
                          "Alt_L", "Alt_R", "Super_L", "Super_R"]
     for name in common_modifiers:

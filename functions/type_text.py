@@ -21,6 +21,8 @@ from Xlib import X, XK
 from Xlib.display import Display
 from Xlib.ext import xtest
 
+from wait_for_release import wait_for_release
+
 # Column in the keycode's keysym table -> modifiers needed. Columns 2/3
 # are the second layout group (would need a group switch) and are left out.
 LEVEL_MODIFIERS = {
@@ -86,7 +88,10 @@ def main():
 
     # The keypad's own combo (Ctrl+Alt+Shift+N) may still be physically
     # held; those modifiers would end up in the state of every typed key.
-    # Releasing an already-up key is a harmless no-op. See send_hotkey.py.
+    # Wait for the button to be let go (see wait_for_release.py), then
+    # release them once more in case the wait timed out. Releasing an
+    # already-up key is a harmless no-op. See send_hotkey.py.
+    wait_for_release(d)
     for name in ["Control_L", "Control_R", "Shift_L", "Shift_R", "Alt_L",
                  "Alt_R", "Super_L", "Super_R", "ISO_Level3_Shift"]:
         code = keycode(name)

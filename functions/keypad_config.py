@@ -3,6 +3,7 @@ phrases and the step runner behind every Action N.py. The key assignments
 themselves live in ../layers.py and are re-exported here as LAYERS, so
 scripts only ever import keypad_config.
 """
+import fcntl
 import importlib
 import json
 import subprocess
@@ -54,7 +55,9 @@ def shift_layer(delta):
                       str(r), str(g), str(b), "--speed", "2", "--mono"])
 
 
-DEBOUNCE_MS = 400
+# must exceed the X auto-repeat delay (`xset q`: 500 ms), the gap between
+# the first press and the first repeat event
+DEBOUNCE_MS = 700
 
 
 def should_fire(key_number):
@@ -63,19 +66,25 @@ def should_fire(key_number):
     Each firing does a full modifier-release + combo-inject cycle, so a
     held button causes compounding/confusing repeats (e.g. closing then
     immediately acting on the next focused window). This makes even an
-    accidental long hold count as a single action."""
+    accidental long hold count as a single action: the timestamp is
+    refreshed on EVERY event, so only a press after DEBOUNCE_MS of
+    silence fires. AutoKey runs each script in its own thread, so the
+    repeats run concurrently - hence the lock."""
     now = time.time()
-    try:
-        data = json.loads(DEBOUNCE_FILE.read_text())
-    except (FileNotFoundError, ValueError):
-        data = {}
-    last = data.get(str(key_number), 0)
-    if (now - last) * 1000 < DEBOUNCE_MS:
-        return False
-    data[str(key_number)] = now
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    DEBOUNCE_FILE.write_text(json.dumps(data))
-    return True
+    with open(DEBOUNCE_FILE, "a+") as f:
+        fcntl.flock(f, fcntl.LOCK_EX)
+        f.seek(0)
+        try:
+            data = json.loads(f.read())
+        except ValueError:
+            data = {}
+        last = data.get(str(key_number), 0)
+        data[str(key_number)] = now
+        f.seek(0)
+        f.truncate()
+        f.write(json.dumps(data))
+    return (now - last) * 1000 >= DEBOUNCE_MS
 
 
 def get_phrase(name):

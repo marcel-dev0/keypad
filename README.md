@@ -110,6 +110,7 @@ funktionieren).
 | `functions/keypad_config.py` | Ebenenzustand, Entprellung, Schrittausführung |
 | `functions/send_hotkey.py` | Tastenkombination per XTest senden |
 | `functions/type_text.py` | Text per XTest tippen |
+| `functions/wait_for_release.py` | Wartet, bis die Keypad-Taste losgelassen ist |
 | `functions/set_keypad_color.py` | Beleuchtung des Keypads per HID steuern |
 | `functions/scan_keypad_indices.py` | Hilfsprogramm: Tastenindizes der Beleuchtung durchprobieren |
 | `.*.json` | AutoKey-Metadaten der Scripts (Hotkeys) |
